@@ -35,7 +35,7 @@ const ApiKeyBar: React.FC<ApiKeyBarProps> = ({
             OpenRouter API Key
           </h3>
           <p className="text-xs text-gray-600 dark:text-gray-300">
-            Stored locally in your browser. Required for AI functionality using OpenRouter.
+            Optional: API key stored in environment. You can also enter manually for testing.
           </p>
         </div>
         <div className="flex items-center gap-2">
