@@ -107,8 +107,6 @@ const Projects = () => {
                   </Link>
                   <a
                     href={project.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
                     className="flex items-center text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
                   >
                     <FaExternalLinkAlt className="mr-2" /> Try Live Demo

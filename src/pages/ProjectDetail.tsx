@@ -99,8 +99,6 @@ const ProjectDetail = () => {
               <div className="flex flex-wrap gap-4">
                 <a
                   href={project.liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
                   className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-lg font-medium"
                 >
                   <FaExternalLinkAlt className="mr-2" /> Try Live Demo
