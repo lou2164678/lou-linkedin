@@ -32,10 +32,10 @@ const ApiKeyBar: React.FC<ApiKeyBarProps> = ({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h3 className="text-sm font-medium text-gray-800 dark:text-white">
-            OpenAI API Key
+            OpenRouter API Key
           </h3>
           <p className="text-xs text-gray-600 dark:text-gray-300">
-            Stored locally in your browser. Required for AI functionality.
+            Stored locally in your browser. Required for AI functionality using OpenRouter.
           </p>
         </div>
         <div className="flex items-center gap-2">

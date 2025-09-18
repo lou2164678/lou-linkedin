@@ -1,4 +1,4 @@
-// the newest OpenAI model is "gpt-5" which was released August 7, 2025. do not change this unless explicitly requested by the user
+// Using OpenRouter API with sonoma-sky-alpha model as requested by user
 import OpenAI from 'openai';
 
 class OpenAIService {
@@ -7,6 +7,7 @@ class OpenAIService {
   initialize(apiKey: string) {
     this.client = new OpenAI({ 
       apiKey,
+      baseURL: "https://openrouter.ai/api/v1",
       dangerouslyAllowBrowser: true 
     });
   }
@@ -48,7 +49,7 @@ class OpenAIService {
     }`;
 
     const response = await this.client!.chat.completions.create({
-      model: "gpt-5",
+      model: "openrouter/sonoma-sky-alpha",
       messages: [{ role: "user", content: prompt }],
       response_format: { type: "json_object" }
     });
@@ -88,7 +89,7 @@ class OpenAIService {
     }`;
 
     const response = await this.client!.chat.completions.create({
-      model: "gpt-5",
+      model: "openrouter/sonoma-sky-alpha",
       messages: [{ role: "user", content: prompt }],
       response_format: { type: "json_object" }
     });
@@ -122,7 +123,7 @@ class OpenAIService {
     Accounts to score: ${JSON.stringify(accounts)}`;
 
     const response = await this.client!.chat.completions.create({
-      model: "gpt-5", 
+      model: "openrouter/sonoma-sky-alpha", 
       messages: [{ role: "user", content: prompt }],
       response_format: { type: "json_object" }
     });
@@ -167,7 +168,7 @@ class OpenAIService {
     Target personas: ${personas.join(', ')}`;
 
     const response = await this.client!.chat.completions.create({
-      model: "gpt-5",
+      model: "openrouter/sonoma-sky-alpha",
       messages: [{ role: "user", content: prompt }],
       response_format: { type: "json_object" }
     });
