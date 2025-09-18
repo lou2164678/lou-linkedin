@@ -349,11 +349,92 @@ class OpenAIService {
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: `Generate a comprehensive company brief for "${companyName}".` }
-      ],
-      response_format: { type: "json_object" }
+      ]
+      // Note: Removed response_format to allow both JSON and Markdown output as specified in the system prompt
     });
 
-    return JSON.parse(response.choices[0].message.content || '{}');
+    const content = response.choices[0].message.content || '';
+    
+    try {
+      return this.extractJsonFromDualFormatResponse(content);
+    } catch (error) {
+      console.error('Failed to parse company brief response:', error);
+      return {
+        error: 'Failed to parse response',
+        raw_content: content
+      };
+    }
+  }
+
+  private extractJsonFromDualFormatResponse(content: string): any {
+    // Strategy 1: Try to extract from ```json fenced blocks (case-insensitive)
+    const fencedJsonMatch = content.match(/```(?:json|JSON|Json|jsonc)\s*([\s\S]*?)\s*```/i);
+    if (fencedJsonMatch) {
+      try {
+        return JSON.parse(fencedJsonMatch[1]);
+      } catch (e) {
+        // Continue to next strategy
+      }
+    }
+
+    // Strategy 2: Try to extract from generic ``` fences
+    const fencedMatch = content.match(/```\s*([\s\S]*?)\s*```/);
+    if (fencedMatch) {
+      try {
+        return JSON.parse(fencedMatch[1]);
+      } catch (e) {
+        // Continue to next strategy
+      }
+    }
+
+    // Strategy 3: Find balanced braces starting from first '{'
+    const firstBrace = content.indexOf('{');
+    if (firstBrace !== -1) {
+      let braceCount = 0;
+      let inString = false;
+      let escaped = false;
+      
+      for (let i = firstBrace; i < content.length; i++) {
+        const char = content[i];
+        
+        if (escaped) {
+          escaped = false;
+          continue;
+        }
+        
+        if (char === '\\') {
+          escaped = true;
+          continue;
+        }
+        
+        if (char === '"' && !escaped) {
+          inString = !inString;
+          continue;
+        }
+        
+        if (!inString) {
+          if (char === '{') {
+            braceCount++;
+          } else if (char === '}') {
+            braceCount--;
+            if (braceCount === 0) {
+              try {
+                return JSON.parse(content.substring(firstBrace, i + 1));
+              } catch (e) {
+                // Continue to fallback
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // Strategy 4: Fallback - try to parse entire content as JSON
+    try {
+      return JSON.parse(content);
+    } catch (e) {
+      throw new Error('No valid JSON found in response');
+    }
   }
 
   async answerObjection(question: string, documents: string[] = []) {
