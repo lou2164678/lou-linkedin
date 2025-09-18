@@ -11,6 +11,13 @@ export default defineConfig({
     hmr: {
       clientPort: 5000,
       host: 'localhost'
+    },
+    proxy: {
+      '/brief': 'http://localhost:3001',
+      '/objections': 'http://localhost:3001',
+      '/icp': 'http://localhost:3001',
+      '/battlecard': 'http://localhost:3001',
+      '/api': 'http://localhost:3001'
     }
   }
 })

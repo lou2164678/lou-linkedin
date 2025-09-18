@@ -1,6 +1,6 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { FaArrowLeft, FaGithub, FaExternalLinkAlt } from "react-icons/fa";
+import { FaArrowLeft, FaExternalLinkAlt } from "react-icons/fa";
 import { useEffect } from "react";
 import { projectsData, getProjectById } from "../data/projects";
 
@@ -98,20 +98,12 @@ const ProjectDetail = () => {
 
               <div className="flex flex-wrap gap-4">
                 <a
-                  href={project.githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-                >
-                  <FaGithub className="mr-2" /> View Details
-                </a>
-                <a
                   href={project.liveUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                  className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-lg font-medium"
                 >
-                  <FaExternalLinkAlt className="mr-2" /> Live Demo
+                  <FaExternalLinkAlt className="mr-2" /> Try Live Demo
                 </a>
               </div>
             </div>

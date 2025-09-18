@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
+import { FaExternalLinkAlt } from "react-icons/fa";
 import { projectsData, getProjectCategories } from "../data/projects";
 
 // Categories for filtering (derived from data)
@@ -25,12 +25,12 @@ const Projects = () => {
           className="mb-12"
         >
           <h1 className="text-4xl font-bold text-center text-gray-800 dark:text-white mb-6">
-            Professional Portfolio
+            AI Sales Solutions Portfolio
           </h1>
           <p className="text-gray-600 dark:text-gray-300 text-center max-w-3xl mx-auto">
-            Current strategic initiatives and AI implementation projects I'm developing to drive revenue growth 
-            and optimize sales processes. Each project leverages my 7+ years of sales experience combined with 
-            analytical thinking and emerging technology integration.
+            A collection of production-ready AI tools demonstrating expertise in sales automation, machine learning, 
+            and revenue optimization. Each application showcases practical AI implementation for B2B sales teams, 
+            combining 7+ years of sales experience with modern AI technologies to solve real-world business challenges.
           </p>
         </motion.div>
 
@@ -103,7 +103,7 @@ const Projects = () => {
                     to={`/projects/${project.id}`}
                     className="flex items-center text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors"
                   >
-                    <FaGithub className="mr-2" /> View Details
+                    View Details
                   </Link>
                   <a
                     href={project.liveUrl}
@@ -111,7 +111,7 @@ const Projects = () => {
                     rel="noopener noreferrer"
                     className="flex items-center text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
                   >
-                    <FaExternalLinkAlt className="mr-2" /> Live Demo
+                    <FaExternalLinkAlt className="mr-2" /> Try Live Demo
                   </a>
                 </div>
               </div>
@@ -131,10 +131,12 @@ const Projects = () => {
         {/* Call to Action */}
         <div className="text-center mt-16">
           <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">
-            Interested in implementing AI in your sales process?
+            Ready to transform your sales process with AI?
           </h3>
           <p className="text-gray-600 dark:text-gray-300 mb-6 max-w-2xl mx-auto">
-            I'm always open to discussing new projects, sharing insights on AI integration, or exploring opportunities to be part of your vision for sales growth.
+            These tools represent proven methodologies for scaling sales operations through intelligent automation. 
+            I'm available to discuss implementation strategies, technical integration, and opportunities to drive 
+            revenue growth through AI-powered sales solutions.
           </p>
           <Link
             to="/contact"
