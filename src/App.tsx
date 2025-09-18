@@ -7,6 +7,10 @@ import ProjectDetail from "./pages/ProjectDetail";
 import Skills from "./pages/Skills";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import AutoBrief from "./pages/toolkit/AutoBrief";
+import Objections from "./pages/toolkit/Objections";
+import ICPScorer from "./pages/toolkit/ICPScorer";
+import Battlecard from "./pages/toolkit/Battlecard";
 
 function App() {
   return (
@@ -17,6 +21,10 @@ function App() {
       <Route path="/skills" element={<Layout><Skills /></Layout>} />
       <Route path="/projects/:id" element={<Layout><ProjectDetail /></Layout>} />
       <Route path="/contact" element={<Layout><Contact /></Layout>} />
+      <Route path="/brief" element={<Layout><AutoBrief /></Layout>} />
+      <Route path="/objections" element={<Layout><Objections /></Layout>} />
+      <Route path="/icp" element={<Layout><ICPScorer /></Layout>} />
+      <Route path="/battlecard" element={<Layout><Battlecard /></Layout>} />
       <Route path="*" element={<Layout><NotFound /></Layout>} />
     </Routes>
   );

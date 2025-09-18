@@ -5,6 +5,7 @@ channel = "stable-25_05"
 
 [agent]
 expertMode = true
+integrations = ["javascript_openai:1.0.0"]
 
 [workflows]
 runButton = "Project"
@@ -18,10 +19,6 @@ author = "agent"
 task = "workflow.run"
 args = "Frontend"
 
-[[workflows.workflow.tasks]]
-task = "workflow.run"
-args = "Sales Toolkit"
-
 [[workflows.workflow]]
 name = "Frontend"
 author = "agent"
@@ -34,24 +31,16 @@ waitForPort = 5000
 [workflows.workflow.metadata]
 outputType = "webview"
 
-[[workflows.workflow]]
-name = "Sales Toolkit"
-author = "agent"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "cd apps/sales-toolkit && bun run dev"
-waitForPort = 3001
-
-[workflows.workflow.metadata]
-outputType = "console"
-
 [[ports]]
 localPort = 3001
 externalPort = 3001
 
 [[ports]]
-localPort = 42739
+localPort = 5000
+externalPort = 5173
+
+[[ports]]
+localPort = 36583
 externalPort = 80
 
 [deployment]
