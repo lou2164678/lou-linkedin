@@ -1,8 +1,4 @@
-// Using OpenRouter API with sonoma-sky-alpha model as requested by user
-import OpenAI from 'openai';
-
-// AutoBrief AI system prompt from autobriefai_prompt.txt
-const AUTOBRIEF_SYSTEM_PROMPT = `Your task is to generate a comprehensive, evidence-based brief for **{users_query}** in a specific two-part format.
+Your task is to generate a comprehensive, evidence-based brief for **{users_query}** in a specific two-part format.
 
 **Objective:**
 
@@ -17,14 +13,14 @@ Generate a single, valid JSON object for **{users_query}** that strictly follows
 
 **JSON Requirements:**
 
-  * **Mandatory Citations:** Every factual claim must be supported by an inline \`source\` or \`sources\` object, including \`title\`, \`publisher\`, \`url\`, and \`date\` (YYYY-MM-DD).
+  * **Mandatory Citations:** Every factual claim must be supported by an inline `source` or `sources` object, including `title`, `publisher`, `url`, and `date` (YYYY-MM-DD).
   * **Source Quality:** Use only credible, recent sources (past 24 months preferred), such as official company statements, financial filings, top-tier media, or reputable industry analysis. Avoid Wikipedia, blogs, or forums.
-  * **Handle Unknown Data:** If a required field cannot be found from credible sources, its value must be set to \`"unknown"\`. Provide a brief explanation for the missing data in the \`metadata.limitations\` array. **Never fabricate or use placeholders like "TBD."**
+  * **Handle Unknown Data:** If a required field cannot be found from credible sources, its value must be set to `"unknown"`. Provide a brief explanation for the missing data in the `metadata.limitations` array. **Never fabricate or use placeholders like "TBD."**
   * **Schema Adherence:** The final JSON object must match the structure, keys, and data types of the schema exactly. Do not add, remove, or rename any fields.
 
 #### **JSON Schema**
 
-\`\`\`json
+```json
 {
   "company_profile": {
     "overview": {
@@ -301,7 +297,7 @@ Generate a single, valid JSON object for **{users_query}** that strictly follows
     "follow_up_questions": ["Suggested next research questions"]
   }
 }
-\`\`\`
+```
 
 -----
 
@@ -311,169 +307,60 @@ After generating the complete JSON object, create a separate, clean, and easily 
 
 **Markdown Formatting Rules:**
 
-  * **Main Title:** Start with \`# Company Brief: {users_query}\`.
-  * **Sections:** Use \`##\` headings for each major section (e.g., \`## 🏢 Company Profile\`, \`## 📊 Market Position\`). Using relevant emojis is encouraged.
-  * **Clarity:** Use bolding for field labels (e.g., \`**Founded:**\`, \`**Headquarters:**\`).
-  * **Lists:** Use bullet points (\`-\`) for lists of items like executives, news, products, and competitors.
-  * **Citations:** For each piece of data, add a numbered, bracketed citation (e.g., \`[1]\`, \`[2]\`).
-  * **Sources Section:** Conclude the entire report with a \`## 📚 Sources\` section. List all unique sources from the JSON, numbered to correspond with the citations in the text. Each source should be formatted as: \`[1] Title of Source, Publisher, YYYY-MM-DD. [URL]\``;
+  * **Main Title:** Start with `# Company Brief: {users_query}`.
+  * **Sections:** Use `##` headings for each major section (e.g., `## 🏢 Company Profile`, `## 📊 Market Position`). Using relevant emojis is encouraged.
+  * **Clarity:** Use bolding for field labels (e.g., `**Founded:**`, `**Headquarters:**`).
+  * **Lists:** Use bullet points (`-`) for lists of items like executives, news, products, and competitors.
+  * **Citations:** For each piece of data, add a numbered, bracketed citation (e.g., `[1]`, `[2]`).
+  * **Sources Section:** Conclude the entire report with a `## 📚 Sources` section. List all unique sources from the JSON, numbered to correspond with the citations in the text. Each source should be formatted as: `[1] Title of Source, Publisher, YYYY-MM-DD. [URL]`
 
-class OpenAIService {
-  private client: OpenAI | null = null;
-  
-  initialize(apiKey?: string) {
-    if (apiKey) {
-      this.client = new OpenAI({ 
-        apiKey,
-        baseURL: "https://openrouter.ai/api/v1",
-        dangerouslyAllowBrowser: true 
-      });
-    }
-  }
-  
+### **Example Output Structure**
 
-  private ensureInitialized() {
-    if (!this.client) {
-      throw new Error('OpenAI client not initialized. Please provide an API key.');
-    }
-  }
-
-  async generateCompanyBrief(companyName: string) {
-    this.ensureInitialized();
-    
-    // Replace placeholder in system prompt with actual company name
-    const systemPrompt = AUTOBRIEF_SYSTEM_PROMPT.replace(/{users_query}/g, companyName);
-    
-    const response = await this.client!.chat.completions.create({
-      model: "openrouter/sonoma-sky-alpha",
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: `Generate a comprehensive company brief for "${companyName}".` }
-      ],
-      response_format: { type: "json_object" }
-    });
-
-    return JSON.parse(response.choices[0].message.content || '{}');
-  }
-
-  async answerObjection(question: string, documents: string[] = []) {
-    this.ensureInitialized();
-    
-    const context = documents.length > 0 
-      ? `Context from knowledge base:\n${documents.join('\n\n')}\n\n`
-      : '';
-    
-    const prompt = `${context}Answer this sales objection: "${question}"
-    
-    Respond with JSON in this exact format:
-    {
-      "answer": {
-        "bullets": ["key point 1", "key point 2", "key point 3"],
-        "caveat": "optional caveat or clarification",
-        "talkTrack": "conversational response script"
-      },
-      "citations": [
+```json
+{
+  "company_profile": {
+    "overview": {
+      "company_name": "Stripe",
+      "founded": "2010",
+      "sources": [
         {
-          "title": "document name",
-          "page": 1
-        }
-      ],
-      "context": [
-        {
-          "title": "document name", 
-          "page": 1,
-          "excerpt": "relevant excerpt"
+          "title": "About Stripe",
+          "publisher": "Stripe",
+          "url": "https://stripe.com/about",
+          "date": "2025-09-17"
         }
       ]
-    }`;
-
-    const response = await this.client!.chat.completions.create({
-      model: "openrouter/sonoma-sky-alpha",
-      messages: [{ role: "user", content: prompt }],
-      response_format: { type: "json_object" }
-    });
-
-    return JSON.parse(response.choices[0].message.content || '{}');
-  }
-
-  async scoreAccounts(accounts: any[]) {
-    this.ensureInitialized();
-    
-    const prompt = `Score these B2B accounts for sales priority (0-100). Respond with JSON in this exact format:
-    {
-      "accounts": [
-        {
-          "name": "...",
-          "score": 85,
-          "reasoning": "explanation of score",
-          "firstPlay": "recommended first action",
-          "industry": "...",
-          "employees": 1000,
-          "region": "..."
-        }
-      ],
-      "summary": {
-        "total": ${accounts.length},
-        "highPriority": 0,
-        "averageScore": 0
-      }
+    },
+    "financials": {
+        "revenue": "unknown",
+        "sources": [
+           {
+             "title": "Stripe doesn't disclose revenue",
+             "publisher": "Forbes",
+             "url": "https://www.forbes.com/...",
+             "date": "2024-08-01"
+           }
+        ]
     }
-    
-    Accounts to score: ${JSON.stringify(accounts)}`;
-
-    const response = await this.client!.chat.completions.create({
-      model: "openrouter/sonoma-sky-alpha", 
-      messages: [{ role: "user", content: prompt }],
-      response_format: { type: "json_object" }
-    });
-
-    return JSON.parse(response.choices[0].message.content || '{}');
-  }
-
-  async generateBattlecard(ourSummary: string, competitors: any[], personas: string[]) {
-    this.ensureInitialized();
-    
-    const prompt = `Generate a competitive battlecard. Respond with JSON in this exact format:
-    {
-      "competitivePositioning": {
-        "ourStrengths": ["strength 1", "strength 2"],
-        "competitorWeaknesses": ["weakness 1", "weakness 2"], 
-        "differentiators": ["differentiator 1", "differentiator 2"]
-      },
-      "objectionHandling": [
-        {
-          "objection": "common objection",
-          "response": "how to respond",
-          "evidence": "supporting evidence"
-        }
-      ],
-      "talkTracks": {
-        "SDR": ["talk track 1", "talk track 2"],
-        "AE": ["talk track 1", "talk track 2"]
-      },
-      "featureComparison": [
-        {
-          "feature": "Feature Name",
-          "us": "Our capability",
-          "competitors": {
-            "Competitor A": "Their capability"
-          }
-        }
-      ]
-    }
-    
-    Our product: ${ourSummary}
-    Competitors: ${JSON.stringify(competitors)}
-    Target personas: ${personas.join(', ')}`;
-
-    const response = await this.client!.chat.completions.create({
-      model: "openrouter/sonoma-sky-alpha",
-      messages: [{ role: "user", content: prompt }],
-      response_format: { type: "json_object" }
-    });
-
-    return JSON.parse(response.choices[0].message.content || '{}');
   }
 }
+```
 
-export const openaiService = new OpenAIService();
+```text
+# Company Brief: Stripe
+
+## 🏢 Company Profile
+
+### Overview
+- **Founded:** 2010 [1]
+- **Headquarters:** ... [1]
+
+### Financials
+- **Revenue:** Data not available [2]
+
+... and so on for all other sections ...
+
+## 📚 Sources
+[1] About Stripe, Stripe, 2025-09-17. [https://stripe.com/about]
+[2] Stripe doesn't disclose revenue, Forbes, 2024-08-01. [https://www.forbes.com/...]
+```
