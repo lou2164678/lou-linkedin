@@ -356,7 +356,9 @@ class OpenAIService {
     const content = response.choices[0].message.content || '';
     
     try {
-      return this.extractJsonFromDualFormatResponse(content);
+      const comprehensiveData = this.extractJsonFromDualFormatResponse(content);
+      // Transform the comprehensive schema to the format expected by the UI
+      return this.transformComprehensiveToLegacySchema(comprehensiveData);
     } catch (error) {
       console.error('Failed to parse company brief response:', error);
       return {
@@ -435,6 +437,131 @@ class OpenAIService {
     } catch (e) {
       throw new Error('No valid JSON found in response');
     }
+  }
+
+  private transformComprehensiveToLegacySchema(data: any): any {
+    // Handle error responses
+    if (data.error) {
+      return data;
+    }
+
+    try {
+      // Extract data from the comprehensive schema and map to legacy format
+      const company = data.company_profile?.overview || {};
+      const keyExecutives = data.company_profile?.key_executives || [];
+      const coreOfferings = data.products_services?.core_offerings || [];
+      const recentNews = data.company_profile?.recent_news || [];
+      
+      // Transform to legacy schema format
+      return {
+        company: {
+          name: company.company_name || 'Unknown Company',
+          website: this.extractFirstUrl(company.sources) || undefined,
+          industry: company.industry || 'Unknown Industry',
+          size: company.employee_count || 'Unknown Size',
+          headquarters: company.headquarters || 'Unknown Location'
+        },
+        keyPeople: keyExecutives.map((exec: any) => ({
+          name: exec.name || 'Unknown',
+          title: exec.position || 'Unknown Position',
+          background: exec.background || undefined
+        })),
+        businessModel: {
+          description: company.business_model || 'Not available',
+          revenue: data.company_profile?.financials?.revenue || 'Unknown',
+          keyProducts: coreOfferings.map((offering: any) => offering.name).filter(Boolean) || []
+        },
+        painPoints: this.extractInsightsFromSections(data, 'challenges') || [],
+        talkingPoints: this.extractInsightsFromSections(data, 'opportunities') || [],
+        competitiveLandscape: this.extractCompetitorNames(data) || [],
+        recentNews: recentNews.map((news: any) => news.headline || news.summary).filter(Boolean) || []
+      };
+    } catch (transformError) {
+      console.error('Failed to transform comprehensive schema:', transformError);
+      // Return a fallback structure to prevent UI crashes
+      return {
+        company: {
+          name: 'Error parsing response',
+          industry: 'Unknown',
+          size: 'Unknown',
+          headquarters: 'Unknown'
+        },
+        keyPeople: [],
+        businessModel: {
+          description: 'Error parsing response',
+          revenue: 'Unknown',
+          keyProducts: []
+        },
+        painPoints: [],
+        talkingPoints: [],
+        competitiveLandscape: [],
+        recentNews: []
+      };
+    }
+  }
+
+  private extractFirstUrl(sources: any[]): string | null {
+    if (!Array.isArray(sources)) return null;
+    const firstSource = sources[0];
+    return firstSource?.url || null;
+  }
+
+  private extractInsightsFromSections(data: any, type: 'challenges' | 'opportunities'): string[] {
+    const insights: string[] = [];
+    
+    // Extract from market position section
+    const marketPosition = data.market_position || {};
+    const items = marketPosition[`key_${type}`] || [];
+    items.forEach((item: any) => {
+      if (type === 'challenges' && item.challenge) {
+        insights.push(item.challenge);
+      } else if (type === 'opportunities' && item.opportunity) {
+        insights.push(item.opportunity);
+      }
+    });
+
+    // Extract from competitive advantages (for opportunities)
+    if (type === 'opportunities') {
+      const competitive = data.competitive_analysis?.competitive_advantages || [];
+      competitive.forEach((advantage: any) => {
+        if (advantage.advantage) {
+          insights.push(advantage.advantage);
+        }
+      });
+    }
+
+    // Extract from threats (for challenges)
+    if (type === 'challenges') {
+      const threats = data.competitive_analysis?.threats || [];
+      threats.forEach((threat: any) => {
+        if (threat.threat) {
+          insights.push(threat.threat);
+        }
+      });
+    }
+
+    return insights.slice(0, 5); // Limit to 5 items for UI
+  }
+
+  private extractCompetitorNames(data: any): string[] {
+    const competitors: string[] = [];
+    
+    const directCompetitors = data.competitive_analysis?.direct_competitors || [];
+    const indirectCompetitors = data.competitive_analysis?.indirect_competitors || [];
+    
+    directCompetitors.forEach((comp: any) => {
+      if (comp.company_name) {
+        competitors.push(comp.company_name);
+      }
+    });
+    
+    indirectCompetitors.forEach((comp: any) => {
+      if (comp.company_name) {
+        competitors.push(`${comp.company_name} (indirect)`);
+      }
+    });
+    
+    return competitors.slice(0, 5); // Limit to 5 competitors for UI
   }
 
   async answerObjection(question: string, documents: string[] = []) {
