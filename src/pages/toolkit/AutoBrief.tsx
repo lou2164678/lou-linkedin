@@ -1,9 +1,10 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { FaArrowLeft, FaSpinner } from 'react-icons/fa';
 import ApiKeyBar from '../../components/toolkit/ApiKeyBar';
 import CopyButton from '../../components/toolkit/CopyButton';
+import { openaiService } from '../../services/openai';
 
 interface CompanyBrief {
   company: {
@@ -36,6 +37,12 @@ const AutoBrief: React.FC = () => {
   const [briefData, setBriefData] = useState<CompanyBrief | null>(null);
   const [apiKey, setApiKey] = useState<string>('');
 
+  useEffect(() => {
+    if (apiKey) {
+      openaiService.initialize(apiKey);
+    }
+  }, [apiKey]);
+
   const generateBrief = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!companyName.trim() || isLoading) return;
@@ -50,57 +57,8 @@ const AutoBrief: React.FC = () => {
     setBriefData(null);
 
     try {
-      // This would be replaced with actual API call using the OpenAI integration
-      // For now, creating a sample response structure
-      await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate API delay
-      
-      const mockBrief: CompanyBrief = {
-        company: {
-          name: companyName,
-          website: `https://${companyName.toLowerCase().replace(/\s+/g, '')}.com`,
-          industry: "Technology",
-          size: "10,000+ employees",
-          headquarters: "San Francisco, CA"
-        },
-        keyPeople: [
-          {
-            name: "CEO Name",
-            title: "Chief Executive Officer",
-            background: "Former VP at major tech company"
-          },
-          {
-            name: "CTO Name", 
-            title: "Chief Technology Officer",
-            background: "PhD in Computer Science"
-          }
-        ],
-        businessModel: {
-          description: `${companyName} provides enterprise software solutions`,
-          revenue: "$1B+ annually",
-          keyProducts: ["Product A", "Product B", "Product C"]
-        },
-        painPoints: [
-          "Scaling operations efficiently",
-          "Managing technical debt",
-          "Competitive market pressure"
-        ],
-        talkingPoints: [
-          "Proven track record of successful implementations",
-          "ROI demonstrated within 6 months",
-          "Industry-leading security and compliance"
-        ],
-        competitiveLandscape: [
-          "Competitor 1 - enterprise focus",
-          "Competitor 2 - mid-market leader" 
-        ],
-        recentNews: [
-          "Recent funding round of $100M",
-          "New product launch announcement",
-          "Strategic partnership with major cloud provider"
-        ]
-      };
-
-      setBriefData(mockBrief);
+      const briefResult = await openaiService.generateCompanyBrief(companyName);
+      setBriefData(briefResult);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred while generating the brief.');
     } finally {

@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { FaArrowLeft, FaUpload, FaQuestion, FaSpinner } from 'react-icons/fa';
 import TwoPane from '../../components/toolkit/TwoPane';
 import CopyButton from '../../components/toolkit/CopyButton';
 import ApiKeyBar from '../../components/toolkit/ApiKeyBar';
+import { openaiService } from '../../services/openai';
 
 interface ObjectionResponse {
   answer: {
@@ -33,6 +34,12 @@ const Objections: React.FC = () => {
   const [error, setError] = useState<string>('');
   const [apiKey, setApiKey] = useState('');
   const [docs, setDocs] = useState<{ id: string; title: string }[]>([]);
+
+  useEffect(() => {
+    if (apiKey) {
+      openaiService.initialize(apiKey);
+    }
+  }, [apiKey]);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFiles(Array.from(e.target.files || []));
@@ -82,38 +89,9 @@ const Objections: React.FC = () => {
     setAskResult(null);
     
     try {
-      // Simulate AI response
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      const mockResponse: ObjectionResponse = {
-        answer: {
-          bullets: [
-            "Our solution provides 3x faster implementation compared to competitors",
-            "ROI is typically achieved within 6 months vs 12-18 months with alternatives",
-            "Total cost of ownership is 40% lower when factoring in maintenance and support"
-          ],
-          caveat: "Pricing varies based on specific use case and implementation requirements",
-          talkTrack: "I understand cost is a key consideration. Let me walk you through why our customers consistently see this as an investment that pays for itself quickly..."
-        },
-        citations: [
-          { title: "ROI Case Study 2024", page: 3 },
-          { title: "Competitive Analysis Report", page: 12 }
-        ],
-        context: [
-          {
-            title: "ROI Case Study 2024",
-            page: 3,
-            excerpt: "Implementation time reduced from 18 months to 6 months, resulting in faster time to value..."
-          },
-          {
-            title: "Competitive Analysis Report", 
-            page: 12,
-            excerpt: "When comparing total cost of ownership over 3 years, our solution demonstrates 40% cost savings..."
-          }
-        ]
-      };
-      
-      setAskResult(mockResponse);
+      const documents = docs.map(doc => `Document: ${doc.title}`);
+      const response = await openaiService.answerObjection(question, documents);
+      setAskResult(response);
     } catch (e: any) {
       setError(e?.message || 'Network error');
     } finally {

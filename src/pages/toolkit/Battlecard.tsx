@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { FaArrowLeft, FaPlus, FaTrash, FaSpinner } from 'react-icons/fa';
 import TwoPane from '../../components/toolkit/TwoPane';
 import CopyButton from '../../components/toolkit/CopyButton';
 import ApiKeyBar from '../../components/toolkit/ApiKeyBar';
+import { openaiService } from '../../services/openai';
 
 interface Competitor {
   id: string;
@@ -44,6 +45,12 @@ const Battlecard: React.FC = () => {
   const [result, setResult] = useState<BattlecardResult | null>(null);
   const [error, setError] = useState('');
   const [apiKey, setApiKey] = useState('');
+
+  useEffect(() => {
+    if (apiKey) {
+      openaiService.initialize(apiKey);
+    }
+  }, [apiKey]);
 
   const togglePersona = (persona: string) => {
     setPersonas(prev => 
@@ -95,84 +102,8 @@ const Battlecard: React.FC = () => {
     setResult(null);
     
     try {
-      // Simulate AI battlecard generation
-      await new Promise(resolve => setTimeout(resolve, 3000));
-      
-      const mockResult: BattlecardResult = {
-        competitivePositioning: {
-          ourStrengths: [
-            "Fastest implementation in market (6 weeks vs 6 months)",
-            "Native integrations with 200+ tools",
-            "Superior customer support with 24/7 availability"
-          ],
-          competitorWeaknesses: [
-            "AlphaCorp: Complex implementation, high maintenance overhead",
-            "BetaSuite: Limited enterprise features, poor scalability"
-          ],
-          differentiators: [
-            "AI-powered automation reduces manual work by 70%",
-            "Unified dashboard eliminates tool switching",
-            "Proven ROI within first quarter"
-          ]
-        },
-        objectionHandling: [
-          {
-            objection: "Your solution seems more expensive than alternatives",
-            response: "When you factor in implementation time, training costs, and ongoing maintenance, our total cost of ownership is 40% lower over 3 years.",
-            evidence: "ROI study from Forrester showing average savings of $2.3M annually"
-          },
-          {
-            objection: "We're happy with our current solution",
-            response: "Many of our customers said the same thing before discovering they were spending 60% of their time on manual processes that we automate.",
-            evidence: "Case study: Similar company increased productivity by 3x after switching"
-          }
-        ],
-        talkTracks: {
-          SDR: [
-            "Focus on pain points around manual processes and time waste",
-            "Share productivity metrics and quick ROI timelines",
-            "Position as the modern alternative to legacy solutions"
-          ],
-          AE: [
-            "Lead with business outcomes and measurable results",
-            "Demonstrate integration capabilities during technical demos",
-            "Present TCO analysis comparing all alternatives"
-          ],
-          CS: [
-            "Emphasize implementation support and change management",
-            "Highlight training resources and ongoing optimization",
-            "Share success stories from similar customer implementations"
-          ]
-        },
-        featureComparison: [
-          {
-            feature: "Implementation Time",
-            us: "6 weeks",
-            competitors: {
-              "AlphaCorp": "6 months",
-              "BetaSuite": "3 months"
-            }
-          },
-          {
-            feature: "Native Integrations",
-            us: "200+",
-            competitors: {
-              "AlphaCorp": "50",
-              "BetaSuite": "25"
-            }
-          },
-          {
-            feature: "AI Automation",
-            us: "Advanced ML models",
-            competitors: {
-              "AlphaCorp": "Basic rules engine",
-              "BetaSuite": "Manual only"
-            }
-          }
-        ]
-      };
-      
-      setResult(mockResult);
+      const battlecardResult = await openaiService.generateBattlecard(ourSummary, competitors, personas);
+      setResult(battlecardResult);
     } catch (e: any) {
       setError(e?.message || 'Network error');
     } finally {

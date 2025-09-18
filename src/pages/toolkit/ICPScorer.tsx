@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { FaArrowLeft, FaUpload, FaCalculator, FaSpinner } from 'react-icons/fa';
 import TwoPane from '../../components/toolkit/TwoPane';
 import CopyButton from '../../components/toolkit/CopyButton';
 import ApiKeyBar from '../../components/toolkit/ApiKeyBar';
+import { openaiService } from '../../services/openai';
 
 interface AccountRow {
   name: string;
@@ -36,6 +37,12 @@ const ICPScorer: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [apiKey, setApiKey] = useState('');
+
+  useEffect(() => {
+    if (apiKey) {
+      openaiService.initialize(apiKey);
+    }
+  }, [apiKey]);
 
   const parseCSV = (text: string): AccountRow[] => {
     const lines = text.split(/\r?\n/).filter(Boolean);
@@ -88,52 +95,7 @@ const ICPScorer: React.FC = () => {
     setScored(null);
     
     try {
-      // Simulate AI scoring process
-      await new Promise(resolve => setTimeout(resolve, 2500));
-      
-      const scoredAccounts: ScoredAccount[] = rows.map(account => {
-        // Mock scoring logic
-        let score = Math.floor(Math.random() * 40) + 30; // 30-70 base score
-        
-        // Adjust score based on criteria
-        if (account.employees && account.employees > 1000) score += 15;
-        if (account.industry?.toLowerCase().includes('tech')) score += 10;
-        if (account.region?.toLowerCase().includes('north america')) score += 5;
-        
-        score = Math.min(100, score);
-        
-        let reasoning = 'Score based on: ';
-        const factors = [];
-        if (account.employees && account.employees > 1000) factors.push('large organization');
-        if (account.industry?.toLowerCase().includes('tech')) factors.push('target industry');
-        if (account.region?.toLowerCase().includes('north america')) factors.push('preferred geography');
-        if (factors.length === 0) factors.push('basic profile match');
-        reasoning += factors.join(', ');
-        
-        const firstPlay = score > 75 ? 'Direct executive outreach with ROI case study' :
-                         score > 50 ? 'Mid-level contact with product demo' :
-                         'Educational content and nurture sequence';
-        
-        return {
-          ...account,
-          score,
-          reasoning,
-          firstPlay
-        };
-      });
-      
-      // Sort by score descending
-      scoredAccounts.sort((a, b) => b.score - a.score);
-      
-      const result: ScoringResult = {
-        accounts: scoredAccounts,
-        summary: {
-          total: scoredAccounts.length,
-          highPriority: scoredAccounts.filter(a => a.score > 75).length,
-          averageScore: Math.round(scoredAccounts.reduce((sum, a) => sum + a.score, 0) / scoredAccounts.length)
-        }
-      };
-      
+      const result = await openaiService.scoreAccounts(rows);
       setScored(result);
     } catch (e: any) {
       setError(e?.message || 'Network error');
