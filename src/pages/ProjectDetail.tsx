@@ -41,10 +41,12 @@ const ProjectDetail = () => {
           transition={{ duration: 0.5 }}
         >
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
-            <div className="bg-gray-200 dark:bg-gray-700 h-64 md:h-80 flex items-center justify-center">
-              <p className="text-gray-500 dark:text-gray-400 text-lg">
-                Project Image
-              </p>
+            <div className="h-64 md:h-80 overflow-hidden">
+              <img 
+                src={project.image} 
+                alt={project.title}
+                className="w-full h-full object-cover"
+              />
             </div>
 
             <div className="p-6 md:p-8">
@@ -125,8 +127,12 @@ const ProjectDetail = () => {
                   transition={{ duration: 0.5 }}
                   viewport={{ once: true }}
                 >
-                  <div className="bg-gray-200 dark:bg-gray-700 h-40 flex items-center justify-center">
-                    <p className="text-gray-500 dark:text-gray-400">Project Image</p>
+                  <div className="h-40 overflow-hidden">
+                    <img 
+                      src={p.image} 
+                      alt={p.title}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                   <div className="p-5">
                     <h4 className="text-lg font-bold text-gray-800 dark:text-white mb-2">

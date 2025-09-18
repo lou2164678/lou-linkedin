@@ -63,8 +63,12 @@ const Projects = () => {
               className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden"
             >
               <Link to={`/projects/${project.id}`} className="block">
-                <div className="bg-gray-200 dark:bg-gray-700 h-48 flex items-center justify-center">
-                  <p className="text-gray-500 dark:text-gray-400">Project Image</p>
+                <div className="h-48 overflow-hidden">
+                  <img 
+                    src={project.image} 
+                    alt={project.title}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </Link>
 

@@ -4,13 +4,16 @@ import OpenAI from 'openai';
 class OpenAIService {
   private client: OpenAI | null = null;
   
-  initialize(apiKey: string) {
-    this.client = new OpenAI({ 
-      apiKey,
-      baseURL: "https://openrouter.ai/api/v1",
-      dangerouslyAllowBrowser: true 
-    });
+  initialize(apiKey?: string) {
+    if (apiKey) {
+      this.client = new OpenAI({ 
+        apiKey,
+        baseURL: "https://openrouter.ai/api/v1",
+        dangerouslyAllowBrowser: true 
+      });
+    }
   }
+  
 
   private ensureInitialized() {
     if (!this.client) {
