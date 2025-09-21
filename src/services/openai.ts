@@ -1,4 +1,4 @@
-// Using OpenRouter API with sonoma-sky-alpha model as requested by user
+// Using X.AI API with grok-4-fast model
 import OpenAI from 'openai';
 
 // AutoBrief AI system prompt from autobriefai_prompt.txt
@@ -325,7 +325,7 @@ class OpenAIService {
     if (apiKey) {
       this.client = new OpenAI({ 
         apiKey,
-        baseURL: "https://openrouter.ai/api/v1",
+        baseURL: "https://api.x.ai/v1",
         dangerouslyAllowBrowser: true 
       });
     }
@@ -345,7 +345,7 @@ class OpenAIService {
     const systemPrompt = AUTOBRIEF_SYSTEM_PROMPT.replace(/{users_query}/g, companyName);
     
     const response = await this.client!.chat.completions.create({
-      model: "openrouter/sonoma-sky-alpha",
+      model: "grok-4-fast",
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: `Generate a comprehensive company brief for "${companyName}".` }
@@ -596,7 +596,7 @@ class OpenAIService {
     }`;
 
     const response = await this.client!.chat.completions.create({
-      model: "openrouter/sonoma-sky-alpha",
+      model: "grok-4-fast",
       messages: [{ role: "user", content: prompt }],
       response_format: { type: "json_object" }
     });
@@ -630,7 +630,7 @@ class OpenAIService {
     Accounts to score: ${JSON.stringify(accounts)}`;
 
     const response = await this.client!.chat.completions.create({
-      model: "openrouter/sonoma-sky-alpha", 
+      model: "grok-4-fast", 
       messages: [{ role: "user", content: prompt }],
       response_format: { type: "json_object" }
     });
@@ -675,7 +675,7 @@ class OpenAIService {
     Target personas: ${personas.join(', ')}`;
 
     const response = await this.client!.chat.completions.create({
-      model: "openrouter/sonoma-sky-alpha",
+      model: "grok-4-fast",
       messages: [{ role: "user", content: prompt }],
       response_format: { type: "json_object" }
     });
