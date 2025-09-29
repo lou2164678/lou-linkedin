@@ -345,7 +345,7 @@ class OpenAIService {
     const systemPrompt = AUTOBRIEF_SYSTEM_PROMPT.replace(/{users_query}/g, companyName);
     
     const response = await this.client!.chat.completions.create({
-      model: "grok-4-fast",
+      model: "x-ai/grok-4-fast:free",
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: `Generate a comprehensive company brief for "${companyName}".` }
@@ -596,7 +596,7 @@ class OpenAIService {
     }`;
 
     const response = await this.client!.chat.completions.create({
-      model: "grok-4-fast",
+      model: "x-ai/grok-4-fast:free",
       messages: [{ role: "user", content: prompt }],
       response_format: { type: "json_object" }
     });
@@ -630,7 +630,7 @@ class OpenAIService {
     Accounts to score: ${JSON.stringify(accounts)}`;
 
     const response = await this.client!.chat.completions.create({
-      model: "grok-4-fast", 
+      model: "x-ai/grok-4-fast:free", 
       messages: [{ role: "user", content: prompt }],
       response_format: { type: "json_object" }
     });
@@ -675,7 +675,7 @@ class OpenAIService {
     Target personas: ${personas.join(', ')}`;
 
     const response = await this.client!.chat.completions.create({
-      model: "grok-4-fast",
+      model: "x-ai/grok-4-fast:free",
       messages: [{ role: "user", content: prompt }],
       response_format: { type: "json_object" }
     });
