@@ -1,4 +1,4 @@
-export type Project = {
+export interface Project {
   id: number;
   title: string;
   category: string;
@@ -9,33 +9,33 @@ export type Project = {
   image: string;
   githubUrl: string;
   liveUrl: string;
-};
+}
 
 export const projectsData: Project[] = [
   {
-    id: 1,
-    title: "AutoBrief AI - Account Research Automation",
+    id: 5,
+    title: "Prospect Vetting Assistant - Streaming Gemini Reports",
     category: "AI Sales Tools",
     description:
-      "AI-powered account research platform that generates comprehensive company briefs and talking points for B2B sales teams, reducing prep time from hours to minutes.",
+      "Real-time prospect research assistant that streams structured Gemini briefings through OpenRouter, turning raw company inputs into seller-ready insights.",
     longDescription:
-      "AutoBrief AI revolutionizes sales preparation by automating the time-intensive process of account research. Using advanced AI models, it analyzes company information to generate structured briefs including company overview, key decision makers, pain points, and strategic talking points. This tool transforms how sales professionals prepare for client meetings, enabling them to walk into any conversation fully informed and ready to add value from the first interaction.",
-    technologies: ["OpenAI GPT-4", "Next.js", "TypeScript", "Real-time API Integration", "JSON Processing"],
+      "The Prospect Vetting Assistant accelerates outbound prep by combining Gemini's up-to-date knowledge with a streaming experience optimised for sales teams. Reps provide a company name and instantly receive a structured Markdown briefing covering strategic position, product fit, active initiatives, risk flags, and actionable next plays. The experience mirrors a live analyst typing findings in real time, reducing prep cycles from hours to minutes.",
+    technologies: ["Gemini 2.5 Flash", "OpenRouter", "Streaming UX", "React", "TypeScript"],
     features: [
-      "Instant company analysis and brief generation",
-      "Strategic talking points and value propositions",
-      "Decision maker identification and insights",
-      "Customizable brief templates and formats",
-      "Export capabilities for CRM integration",
+      "Streaming Markdown brief with eight seller-focused sections",
+      "Seller-ready insights with recommended plays and buyer personas",
+      "Copy-to-clipboard Markdown export for CRM or docs",
+      "Abortable generations with automatic state management",
+      "OpenRouter API key storage via secure local preference",
     ],
     image: "/generated_images/AutoBrief_AI_Dashboard_Interface_92b4f61c.png",
     githubUrl: "",
-    liveUrl: "/brief",
+    liveUrl: "/prospect",
   },
   {
     id: 2,
     title: "Objection Knowledge Base - AI-Powered Sales Support",
-    category: "AI Sales Tools", 
+    category: "AI Sales Tools",
     description:
       "Intelligent objection handling system using RAG (Retrieval-Augmented Generation) to provide contextual responses and build institutional knowledge for sales teams.",
     longDescription:
@@ -53,44 +53,24 @@ export const projectsData: Project[] = [
     liveUrl: "/objections",
   },
   {
-    id: 3,
-    title: "ICP Scorer - Ideal Customer Profile Analytics",
+    id: 6,
+    title: "AI Interview Pack Generator",
     category: "AI Sales Tools",
     description:
-      "Data-driven lead scoring system that evaluates prospects against your ideal customer profile using heuristic algorithms and predictive analytics for better sales prioritization.",
+      "Turn a short role query into a structured, JSON-based interview prep pack with a clean visual report.",
     longDescription:
-      "ICP Scorer leverages advanced analytics to help sales teams identify and prioritize the highest-value prospects. By analyzing multiple data points against your ideal customer profile criteria, it provides quantitative scoring that guides resource allocation and outreach strategies. This tool eliminates guesswork in lead prioritization and ensures sales efforts are focused on prospects with the highest probability of conversion.",
-    technologies: ["Heuristic Algorithms", "CSV Processing", "Predictive Analytics", "React", "Data Visualization"],
+      "The AI Interview Pack Generator converts a simple role/context prompt into a deeply structured interview preparation document. It strictly returns a JSON object that our UI renders into a polished report and a raw JSON view for power users, enabling fast, credible prep with live-grounded sources.",
+    technologies: ["Gemini 2.5 Pro", "OpenRouter", "JSON Mode", "React", "TypeScript"],
     features: [
-      "Automated lead scoring based on ICP criteria",
-      "Bulk CSV upload and processing capabilities", 
-      "Customizable scoring weights and parameters",
-      "Priority-ranked prospect lists with rationale",
-      "Export functionality for CRM integration",
+      "Strict JSON output with schema enforcement",
+      "Visual Report and Raw JSON tabs",
+      "Live web grounding with citations",
+      "Reusable sections (facts, plan, rubric)",
+      "Copy-to-clipboard for JSON export",
     ],
-    image: "/generated_images/ICP_Scorer_Analytics_Dashboard_28ca6c54.png",
+    image: "/generated_images/Interview_Pack_Generator_Interface.svg",
     githubUrl: "",
-    liveUrl: "/icp",
-  },
-  {
-    id: 4,
-    title: "Battlecard Builder - Competitive Intelligence AI",
-    category: "AI Sales Tools",
-    description:
-      "AI-driven competitive analysis platform that generates comprehensive battlecards with objection handling strategies and competitive positioning for complex B2B sales scenarios.",
-    longDescription:
-      "Battlecard Builder empowers sales teams with AI-generated competitive intelligence and positioning strategies. This sophisticated tool analyzes competitive landscapes to create detailed battlecards that include feature comparisons, objection handling tactics, and strategic positioning advice. By automating competitive research and synthesis, it ensures sales teams are always prepared to differentiate their solutions and address competitive challenges effectively.",
-    technologies: ["AI Analysis", "Competitive Intelligence", "Strategic Positioning", "Automated Research", "Next.js API Routes"],
-    features: [
-      "Automated competitive analysis and comparison",
-      "Strategic positioning recommendations", 
-      "Objection handling strategies for competitive scenarios",
-      "Feature-by-feature comparison matrices",
-      "Exportable battlecards for field sales teams",
-    ],
-    image: "/generated_images/Battlecard_Builder_Intelligence_Platform_1f1b00ad.png",
-    githubUrl: "",
-    liveUrl: "/battlecard",
+    liveUrl: "/interview-pack",
   },
 ];
 

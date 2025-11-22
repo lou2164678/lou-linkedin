@@ -13,7 +13,7 @@ const Footer = () => {
               B2B Sales & Account Management Expert | AI & Technology Advocate
             </p>
             <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
-              Tempe, Arizona • 209+ LinkedIn Connections • #OPEN_TO_WORK
+              Phoenix, Arizona • 209+ LinkedIn Connections • #OPEN_TO_WORK
             </p>
           </div>
 
@@ -43,7 +43,7 @@ const Footer = () => {
               <FaTwitter size={24} />
             </a>
             <a
-              href="mailto:lou@sergiacomi.me"
+              href="mailto:lou.2191@icloud.com"
               className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
             >
               <FaEnvelope size={24} />

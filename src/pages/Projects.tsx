@@ -63,10 +63,25 @@ const Projects = () => {
               className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden"
             >
               <Link to={`/projects/${project.id}`} className="block">
-                <div className="h-48 overflow-hidden">
-                  <img 
-                    src={project.image} 
+                <div className="h-48 overflow-hidden bg-gray-100 dark:bg-gray-800">
+                  <img
+                    src={project.image}
                     alt={project.title}
+                    loading="lazy"
+                    onLoad={(e) => {
+                      const img = e.currentTarget as HTMLImageElement;
+                      if (img.src.endsWith('.svg')) {
+                        img.classList.remove('object-cover');
+                        img.classList.add('object-contain');
+                      }
+                    }}
+                    onError={(e) => {
+                      const img = e.currentTarget as HTMLImageElement;
+                      if (img.src.endsWith('/placeholder.jpg')) return;
+                      img.src = '/placeholder.jpg';
+                      img.classList.remove('object-cover');
+                      img.classList.add('object-contain');
+                    }}
                     className="w-full h-full object-cover"
                   />
                 </div>

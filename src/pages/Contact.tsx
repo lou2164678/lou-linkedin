@@ -85,10 +85,10 @@ const Contact = () => {
                     Email
                   </h3>
                   <a
-                    href="mailto:lou@sergiacomi.me"
+                    href="mailto:lou.2191@icloud.com"
                     className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
                   >
-                    lou@sergiacomi.me
+                    lou.2191@icloud.com
                   </a>
                 </div>
               </div>
@@ -102,10 +102,10 @@ const Contact = () => {
                     Phone
                   </h3>
                   <a
-                    href="tel:602-726-3226"
+                    href="tel:6026924069"
                     className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
                   >
-                    602-726-3226
+                    602-692-4069
                   </a>
                 </div>
               </div>
@@ -119,7 +119,7 @@ const Contact = () => {
                     Location
                   </h3>
                   <p className="text-gray-600 dark:text-gray-300">
-                    Tempe, Arizona, USA
+                    Phoenix, Arizona
                   </p>
                 </div>
               </div>

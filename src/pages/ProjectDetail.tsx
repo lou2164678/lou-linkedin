@@ -41,10 +41,24 @@ const ProjectDetail = () => {
           transition={{ duration: 0.5 }}
         >
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
-            <div className="h-64 md:h-80 overflow-hidden">
-              <img 
-                src={project.image} 
+            <div className="h-64 md:h-80 overflow-hidden bg-gray-100 dark:bg-gray-800">
+              <img
+                src={project.image}
                 alt={project.title}
+                onLoad={(e) => {
+                  const img = e.currentTarget as HTMLImageElement;
+                  if (img.src.endsWith('.svg')) {
+                    img.classList.remove('object-cover');
+                    img.classList.add('object-contain');
+                  }
+                }}
+                onError={(e) => {
+                  const img = e.currentTarget as HTMLImageElement;
+                  if (img.src.endsWith('/placeholder.jpg')) return;
+                  img.src = '/placeholder.jpg';
+                  img.classList.remove('object-cover');
+                  img.classList.add('object-contain');
+                }}
                 className="w-full h-full object-cover"
               />
             </div>

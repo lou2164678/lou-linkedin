@@ -320,17 +320,21 @@ After generating the complete JSON object, create a separate, clean, and easily 
 
 class OpenAIService {
   private client: OpenAI | null = null;
-  
+
   initialize(apiKey?: string) {
     if (apiKey) {
-      this.client = new OpenAI({ 
+      this.client = new OpenAI({
         apiKey,
-        baseURL: "https://api.x.ai/v1",
-        dangerouslyAllowBrowser: true 
+        baseURL: "https://openrouter.ai/api/v1",
+        dangerouslyAllowBrowser: true,
+        defaultHeaders: {
+          "HTTP-Referer": typeof window !== "undefined" ? window.location.origin : "",
+          "X-Title": "Louis Sergiacomi Portfolio",
+        },
       });
     }
   }
-  
+
 
   private ensureInitialized() {
     if (!this.client) {
@@ -340,12 +344,12 @@ class OpenAIService {
 
   async generateCompanyBrief(companyName: string) {
     this.ensureInitialized();
-    
+
     // Replace placeholder in system prompt with actual company name
     const systemPrompt = AUTOBRIEF_SYSTEM_PROMPT.replace(/{users_query}/g, companyName);
-    
+
     const response = await this.client!.chat.completions.create({
-      model: "grok-4-fast-reasoning",
+      model: "google/gemini-2.0-flash-001",
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: `Generate a comprehensive company brief for "${companyName}".` }
@@ -354,17 +358,14 @@ class OpenAIService {
     });
 
     const content = response.choices[0].message.content || '';
-    
+
     try {
       const comprehensiveData = this.extractJsonFromDualFormatResponse(content);
       // Transform the comprehensive schema to the format expected by the UI
       return this.transformComprehensiveToLegacySchema(comprehensiveData);
     } catch (error) {
       console.error('Failed to parse company brief response:', error);
-      return {
-        error: 'Failed to parse response',
-        raw_content: content
-      };
+      throw new Error('Failed to parse company brief response: ' + (error instanceof Error ? error.message : String(error)));
     }
   }
 
@@ -395,25 +396,25 @@ class OpenAIService {
       let braceCount = 0;
       let inString = false;
       let escaped = false;
-      
+
       for (let i = firstBrace; i < content.length; i++) {
         const char = content[i];
-        
+
         if (escaped) {
           escaped = false;
           continue;
         }
-        
+
         if (char === '\\') {
           escaped = true;
           continue;
         }
-        
+
         if (char === '"' && !escaped) {
           inString = !inString;
           continue;
         }
-        
+
         if (!inString) {
           if (char === '{') {
             braceCount++;
@@ -451,7 +452,7 @@ class OpenAIService {
       const keyExecutives = data.company_profile?.key_executives || [];
       const coreOfferings = data.products_services?.core_offerings || [];
       const recentNews = data.company_profile?.recent_news || [];
-      
+
       // Transform to legacy schema format
       return {
         company: {
@@ -508,7 +509,7 @@ class OpenAIService {
 
   private extractInsightsFromSections(data: any, type: 'challenges' | 'opportunities'): string[] {
     const insights: string[] = [];
-    
+
     // Extract from market position section
     const marketPosition = data.market_position || {};
     const items = marketPosition[`key_${type}`] || [];
@@ -545,32 +546,32 @@ class OpenAIService {
 
   private extractCompetitorNames(data: any): string[] {
     const competitors: string[] = [];
-    
+
     const directCompetitors = data.competitive_analysis?.direct_competitors || [];
     const indirectCompetitors = data.competitive_analysis?.indirect_competitors || [];
-    
+
     directCompetitors.forEach((comp: any) => {
       if (comp.company_name) {
         competitors.push(comp.company_name);
       }
     });
-    
+
     indirectCompetitors.forEach((comp: any) => {
       if (comp.company_name) {
         competitors.push(`${comp.company_name} (indirect)`);
       }
     });
-    
+
     return competitors.slice(0, 5); // Limit to 5 competitors for UI
   }
 
   async answerObjection(question: string, documents: string[] = []) {
     this.ensureInitialized();
-    
-    const context = documents.length > 0 
+
+    const context = documents.length > 0
       ? `Context from knowledge base:\n${documents.join('\n\n')}\n\n`
       : '';
-    
+
     const prompt = `${context}Answer this sales objection: "${question}"
     
     Respond with JSON in this exact format:
@@ -596,86 +597,7 @@ class OpenAIService {
     }`;
 
     const response = await this.client!.chat.completions.create({
-      model: "grok-4-fast-reasoning",
-      messages: [{ role: "user", content: prompt }],
-      response_format: { type: "json_object" }
-    });
-
-    return JSON.parse(response.choices[0].message.content || '{}');
-  }
-
-  async scoreAccounts(accounts: any[]) {
-    this.ensureInitialized();
-    
-    const prompt = `Score these B2B accounts for sales priority (0-100). Respond with JSON in this exact format:
-    {
-      "accounts": [
-        {
-          "name": "...",
-          "score": 85,
-          "reasoning": "explanation of score",
-          "firstPlay": "recommended first action",
-          "industry": "...",
-          "employees": 1000,
-          "region": "..."
-        }
-      ],
-      "summary": {
-        "total": ${accounts.length},
-        "highPriority": 0,
-        "averageScore": 0
-      }
-    }
-    
-    Accounts to score: ${JSON.stringify(accounts)}`;
-
-    const response = await this.client!.chat.completions.create({
-      model: "x-ai/grok-4", 
-      messages: [{ role: "user", content: prompt }],
-      response_format: { type: "json_object" }
-    });
-
-    return JSON.parse(response.choices[0].message.content || '{}');
-  }
-
-  async generateBattlecard(ourSummary: string, competitors: any[], personas: string[]) {
-    this.ensureInitialized();
-    
-    const prompt = `Generate a competitive battlecard. Respond with JSON in this exact format:
-    {
-      "competitivePositioning": {
-        "ourStrengths": ["strength 1", "strength 2"],
-        "competitorWeaknesses": ["weakness 1", "weakness 2"], 
-        "differentiators": ["differentiator 1", "differentiator 2"]
-      },
-      "objectionHandling": [
-        {
-          "objection": "common objection",
-          "response": "how to respond",
-          "evidence": "supporting evidence"
-        }
-      ],
-      "talkTracks": {
-        "SDR": ["talk track 1", "talk track 2"],
-        "AE": ["talk track 1", "talk track 2"]
-      },
-      "featureComparison": [
-        {
-          "feature": "Feature Name",
-          "us": "Our capability",
-          "competitors": {
-            "Competitor A": "Their capability"
-          }
-        }
-      ]
-    }
-    
-    Our product: ${ourSummary}
-    Competitors: ${JSON.stringify(competitors)}
-    Target personas: ${personas.join(', ')}`;
-
-    const response = await this.client!.chat.completions.create({
-      model: "grok-4-fast-reasoning",
+      model: "google/gemini-2.0-flash-001",
       messages: [{ role: "user", content: prompt }],
       response_format: { type: "json_object" }
     });

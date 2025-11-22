@@ -18,13 +18,12 @@ const About = () => {
 
           <div className="flex flex-col md:flex-row items-center gap-10">
             <div className="md:w-1/3">
-              <div className="bg-gray-200 dark:bg-gray-700 h-80 w-full rounded-lg overflow-hidden">
-                {/* Replace with your professional photo when available */}
-                <div className="w-full h-full flex items-center justify-center">
-                  <p className="text-gray-500 dark:text-gray-400">
-                    Professional Photo
-                  </p>
-                </div>
+              <div className="bg-gray-200 dark:bg-gray-700 h-80 w-full rounded-lg overflow-hidden shadow-lg">
+                <img
+                  src="/images/profile.png"
+                  alt="Louis Amelio Sergiacomi"
+                  className="w-full h-full object-cover"
+                />
               </div>
             </div>
 
@@ -32,7 +31,7 @@ const About = () => {
               <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">
                 I'm <span className="text-blue-600 dark:text-blue-400">Louis Amelio Sergiacomi</span>, a Data-Driven Sales Strategist
               </h2>
-              
+
               <p className="text-lg text-blue-600 dark:text-blue-400 font-medium mb-4">
                 B2B Sales & Account Management Expert | AI & Technology Advocate | Revenue Growth Specialist
               </p>
@@ -383,43 +382,7 @@ const About = () => {
           </h2>
 
           <div className="max-w-4xl mx-auto">
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border-l-4 border-green-500">
-              <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-4">
-                <h3 className="text-xl font-bold text-gray-800 dark:text-white">
-                  Business/Commerce, General
-                </h3>
-                <span className="text-gray-600 dark:text-gray-300 font-medium">
-                  2010 - 2012
-                </span>
-              </div>
-              <h4 className="text-blue-600 dark:text-blue-400 font-medium mb-4">
-                Mesa Community College - Arizona
-              </h4>
-              
-              <div className="mb-4">
-                <h5 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                  Athletic Achievements - Mesa Community College Baseball
-                </h5>
-                <ul className="text-gray-600 dark:text-gray-300 space-y-2">
-                  <li className="flex items-start">
-                    <span className="text-yellow-500 mr-2 mt-1">🏆</span>
-                    <span><strong>Ranked #3 in Nation (2012)</strong> - As scholarship collegiate athlete</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-yellow-500 mr-2 mt-1">🥇</span>
-                    <span><strong>NJCAA Baseball World Champions (2014)</strong> - Volunteer Assistant Coach (Fall 2013)</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-silver-500 mr-2 mt-1">🥈</span>
-                    <span><strong>NJCAA Baseball World Series Championship (2019)</strong> - 2nd place finish</span>
-                  </li>
-                </ul>
-              </div>
-              
-              <p className="text-gray-600 dark:text-gray-300 text-sm">
-                My athletic background as a scholarship baseball player developed crucial skills in teamwork, discipline, performance under pressure, and competitive drive - qualities that directly translate to my success in sales leadership and achieving ambitious targets.
-              </p>
-            </div>
+
           </div>
         </motion.section>
       </div>

@@ -18,10 +18,10 @@ const Navbar = () => {
           <Link to="/" className="text-2xl font-bold text-gray-800 dark:text-white">
             Louis Sergiacomi
           </Link>
-          
+
           <div className="flex items-center space-x-8">
             <Link to="/" className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors">
-              Resume
+              Home
             </Link>
             <Link to="/projects" className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors">
               Portfolio
@@ -30,7 +30,7 @@ const Navbar = () => {
               Interests
             </Link>
             <Link to="/about" className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors">
-              About
+              Resume
             </Link>
             <Link to="/contact" className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors">
               Contact

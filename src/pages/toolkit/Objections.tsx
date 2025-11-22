@@ -13,15 +13,15 @@ interface ObjectionResponse {
     caveat?: string;
     talkTrack: string;
   };
-  citations: Array<{
+  citations: {
     title: string;
     page?: number;
-  }>;
-  context: Array<{
+  }[];
+  context: {
     title: string;
     page?: number;
     excerpt: string;
-  }>;
+  }[];
 }
 
 const Objections: React.FC = () => {

@@ -11,11 +11,11 @@ const Home = () => {
           {/* Mobile Hero */}
           <div className="md:hidden text-center mb-8">
             <div className="bg-gray-200 dark:bg-gray-700 h-48 w-48 rounded-full mx-auto mb-6 overflow-hidden">
-              <div className="w-full h-full flex items-center justify-center">
-                <p className="text-gray-500 dark:text-gray-400 text-sm">
-                  Professional Photo 
-                </p>
-              </div>
+              <img
+                src="/images/profile.png"
+                alt="Louis Amelio Sergiacomi"
+                className="w-full h-full object-cover"
+              />
             </div>
             <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
               Louis Amelio Sergiacomi
@@ -29,7 +29,7 @@ const Home = () => {
             <p className="text-gray-600 dark:text-gray-300 text-sm mb-6">
               Passionate about leveraging AI and technology to drive sales and customer engagement. Currently serving as Sales Lead Manager at Bimbo Bakeries USA, developing strategic growth plans and mentoring sales teams.
             </p>
-            
+
             {/* CTA Button */}
             <div className="mb-8">
               <button className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 transition-colors">
@@ -77,12 +77,12 @@ const Home = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <div className="bg-gray-200 dark:bg-gray-700 h-80 rounded-lg overflow-hidden">
-                <div className="w-full h-full flex items-center justify-center">
-                  <p className="text-gray-500 dark:text-gray-400">
-                    Professional Photo 
-                  </p>
-                </div>
+              <div className="bg-gray-200 dark:bg-gray-700 h-80 rounded-lg overflow-hidden shadow-lg">
+                <img
+                  src="/images/profile.png"
+                  alt="Louis Amelio Sergiacomi"
+                  className="w-full h-full object-cover"
+                />
               </div>
             </motion.div>
           </div>
@@ -95,7 +95,7 @@ const Home = () => {
           <h2 className="text-xl md:text-3xl font-bold text-gray-800 dark:text-white mb-6">
             Current Projects
           </h2>
-          
+
           <div className="space-y-4">
             {[
               { id: 1, title: "AI in Sales Playbook", description: "Comprehensive guide for implementing AI in sales processes" },
@@ -138,7 +138,7 @@ const Home = () => {
           <h2 className="text-xl md:text-3xl font-bold text-gray-800 dark:text-white mb-6">
             Expertise
           </h2>
-          
+
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
               <div className="text-blue-600 dark:text-blue-400 mb-2">
@@ -199,7 +199,7 @@ const Home = () => {
           <h2 className="text-xl md:text-3xl font-bold text-gray-800 dark:text-white mb-6">
             Experience
           </h2>
-          
+
           <div className="space-y-4">
             <div className="flex items-start space-x-3">
               <div className="w-3 h-3 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
@@ -212,7 +212,7 @@ const Home = () => {
                 </p>
               </div>
             </div>
-            
+
             <div className="flex items-start space-x-3">
               <div className="w-3 h-3 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
               <div className="flex-1">
@@ -224,7 +224,7 @@ const Home = () => {
                 </p>
               </div>
             </div>
-            
+
             <div className="flex items-start space-x-3">
               <div className="w-3 h-3 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
               <div className="flex-1">
@@ -236,7 +236,7 @@ const Home = () => {
                 </p>
               </div>
             </div>
-            
+
             <div className="flex items-start space-x-3">
               <div className="w-3 h-3 bg-gray-400 rounded-full mt-2 flex-shrink-0"></div>
               <div className="flex-1">
