@@ -20,7 +20,7 @@ const About = () => {
             <div className="md:w-1/3">
               <div className="bg-gray-200 dark:bg-gray-700 h-80 w-full rounded-lg overflow-hidden shadow-lg">
                 <img
-                  src="/images/profile.png"
+                  src={`${import.meta.env.BASE_URL}images/profile.png`}
                   alt="Louis Amelio Sergiacomi"
                   className="w-full h-full object-cover"
                 />

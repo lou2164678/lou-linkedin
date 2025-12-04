@@ -4,8 +4,16 @@ import { FaArrowLeft, FaExternalLinkAlt } from "react-icons/fa";
 import { useEffect } from "react";
 import { projectsData, getProjectById } from "../data/projects";
 
+// Helper to prepend BASE_URL for GitHub Pages
+const getAssetPath = (path: string) => {
+  if (path.startsWith('/')) {
+    return `${import.meta.env.BASE_URL}${path.slice(1)}`;
+  }
+  return path;
+};
+
 const ProjectDetail = () => {
-  const { id } = useParams<{id: string}>();
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const projectId = parseInt(id as string);
 
@@ -43,7 +51,7 @@ const ProjectDetail = () => {
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
             <div className="h-64 md:h-80 overflow-hidden bg-gray-100 dark:bg-gray-800">
               <img
-                src={project.image}
+                src={getAssetPath(project.image)}
                 alt={project.title}
                 onLoad={(e) => {
                   const img = e.currentTarget as HTMLImageElement;
@@ -55,7 +63,7 @@ const ProjectDetail = () => {
                 onError={(e) => {
                   const img = e.currentTarget as HTMLImageElement;
                   if (img.src.endsWith('/placeholder.jpg')) return;
-                  img.src = '/placeholder.jpg';
+                  img.src = getAssetPath('/placeholder.jpg');
                   img.classList.remove('object-cover');
                   img.classList.add('object-contain');
                 }}
@@ -113,12 +121,12 @@ const ProjectDetail = () => {
               </div>
 
               <div className="flex flex-wrap gap-4">
-                <a
-                  href={project.liveUrl}
+                <Link
+                  to={project.liveUrl}
                   className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-lg font-medium"
                 >
                   <FaExternalLinkAlt className="mr-2" /> Try Live Demo
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -142,8 +150,8 @@ const ProjectDetail = () => {
                   viewport={{ once: true }}
                 >
                   <div className="h-40 overflow-hidden">
-                    <img 
-                      src={p.image} 
+                    <img
+                      src={getAssetPath(p.image)}
                       alt={p.title}
                       className="w-full h-full object-cover"
                     />

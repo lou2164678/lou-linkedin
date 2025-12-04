@@ -12,7 +12,7 @@ const Home = () => {
           <div className="md:hidden text-center mb-8">
             <div className="bg-gray-200 dark:bg-gray-700 h-48 w-48 rounded-full mx-auto mb-6 overflow-hidden">
               <img
-                src="/images/profile.png"
+                src={`${import.meta.env.BASE_URL}images/profile.png`}
                 alt="Louis Amelio Sergiacomi"
                 className="w-full h-full object-cover"
               />
@@ -79,7 +79,7 @@ const Home = () => {
             >
               <div className="bg-gray-200 dark:bg-gray-700 h-80 rounded-lg overflow-hidden shadow-lg">
                 <img
-                  src="/images/profile.png"
+                  src={`${import.meta.env.BASE_URL}images/profile.png`}
                   alt="Louis Amelio Sergiacomi"
                   className="w-full h-full object-cover"
                 />

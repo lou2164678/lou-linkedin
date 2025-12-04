@@ -4,6 +4,14 @@ import { Link } from "react-router-dom";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { projectsData, getProjectCategories } from "../data/projects";
 
+// Helper to prepend BASE_URL for GitHub Pages
+const getAssetPath = (path: string) => {
+  if (path.startsWith('/')) {
+    return `${import.meta.env.BASE_URL}${path.slice(1)}`;
+  }
+  return path;
+};
+
 // Categories for filtering (derived from data)
 const categories = ["All", ...getProjectCategories()];
 
@@ -28,8 +36,8 @@ const Projects = () => {
             AI Sales Solutions Portfolio
           </h1>
           <p className="text-gray-600 dark:text-gray-300 text-center max-w-3xl mx-auto">
-            A collection of production-ready AI tools demonstrating expertise in sales automation, machine learning, 
-            and revenue optimization. Each application showcases practical AI implementation for B2B sales teams, 
+            A collection of production-ready AI tools demonstrating expertise in sales automation, machine learning,
+            and revenue optimization. Each application showcases practical AI implementation for B2B sales teams,
             combining 7+ years of sales experience with modern AI technologies to solve real-world business challenges.
           </p>
         </motion.div>
@@ -40,11 +48,10 @@ const Projects = () => {
             <button
               key={index}
               onClick={() => setFilter(category)}
-              className={`px-4 py-2 rounded-md transition-colors duration-300 ${
-                filter === category
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700"
-              }`}
+              className={`px-4 py-2 rounded-md transition-colors duration-300 ${filter === category
+                ? "bg-blue-600 text-white"
+                : "bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700"
+                }`}
             >
               {category}
             </button>
@@ -65,7 +72,7 @@ const Projects = () => {
               <Link to={`/projects/${project.id}`} className="block">
                 <div className="h-48 overflow-hidden bg-gray-100 dark:bg-gray-800">
                   <img
-                    src={project.image}
+                    src={getAssetPath(project.image)}
                     alt={project.title}
                     loading="lazy"
                     onLoad={(e) => {
@@ -78,7 +85,7 @@ const Projects = () => {
                     onError={(e) => {
                       const img = e.currentTarget as HTMLImageElement;
                       if (img.src.endsWith('/placeholder.jpg')) return;
-                      img.src = '/placeholder.jpg';
+                      img.src = getAssetPath('/placeholder.jpg');
                       img.classList.remove('object-cover');
                       img.classList.add('object-contain');
                     }}
@@ -124,12 +131,12 @@ const Projects = () => {
                   >
                     View Details
                   </Link>
-                  <a
-                    href={project.liveUrl}
+                  <Link
+                    to={project.liveUrl}
                     className="flex items-center text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
                   >
                     <FaExternalLinkAlt className="mr-2" /> Try Live Demo
-                  </a>
+                  </Link>
                 </div>
               </div>
             </motion.div>
@@ -151,8 +158,8 @@ const Projects = () => {
             Ready to transform your sales process with AI?
           </h3>
           <p className="text-gray-600 dark:text-gray-300 mb-6 max-w-2xl mx-auto">
-            These tools represent proven methodologies for scaling sales operations through intelligent automation. 
-            I'm available to discuss implementation strategies, technical integration, and opportunities to drive 
+            These tools represent proven methodologies for scaling sales operations through intelligent automation.
+            I'm available to discuss implementation strategies, technical integration, and opportunities to drive
             revenue growth through AI-powered sales solutions.
           </p>
           <Link
