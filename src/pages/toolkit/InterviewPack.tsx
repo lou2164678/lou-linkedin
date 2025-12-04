@@ -5,6 +5,7 @@ import { FaArrowLeft, FaSpinner } from "react-icons/fa";
 
 import ApiKeyBar from "../../components/toolkit/ApiKeyBar";
 import CopyButton from "../../components/toolkit/CopyButton";
+import DemoVideo from "../../components/toolkit/DemoVideo";
 import { openRouterInterviewPackService, type InterviewPack } from "../../services/openrouterInterviewPack";
 
 type Tab = "report" | "json";
@@ -139,6 +140,12 @@ const InterviewPackPage = () => {
 
           <ApiKeyBar storageKey="openrouter_api_key" onChange={setApiKey} />
 
+          <DemoVideo
+            videoSrc="/videos/Interview.mp4"
+            title="See It In Action"
+            description="Watch how to generate an interview preparation pack"
+          />
+
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-6 border border-gray-200 dark:border-gray-700">
             <form onSubmit={handleGenerate} className="space-y-4">
               <div>
@@ -183,17 +190,15 @@ const InterviewPackPage = () => {
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 border border-gray-200 dark:border-gray-700">
               <div className="flex items-center gap-2 mb-4">
                 <button
-                  className={`px-4 py-2 rounded-md text-sm font-medium ${
-                    tab === "report" ? "bg-blue-600 text-white" : "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
-                  }`}
+                  className={`px-4 py-2 rounded-md text-sm font-medium ${tab === "report" ? "bg-blue-600 text-white" : "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+                    }`}
                   onClick={() => setTab("report")}
                 >
                   Visual Report
                 </button>
                 <button
-                  className={`px-4 py-2 rounded-md text-sm font-medium ${
-                    tab === "json" ? "bg-blue-600 text-white" : "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
-                  }`}
+                  className={`px-4 py-2 rounded-md text-sm font-medium ${tab === "json" ? "bg-blue-600 text-white" : "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+                    }`}
                   onClick={() => setTab("json")}
                 >
                   Raw JSON
@@ -202,7 +207,7 @@ const InterviewPackPage = () => {
 
               {tab === "json" && (
                 <pre className="bg-gray-900 text-gray-100 p-4 rounded-md overflow-auto text-sm">
-{JSON.stringify(result, null, 2)}
+                  {JSON.stringify(result, null, 2)}
                 </pre>
               )}
 

@@ -5,6 +5,7 @@ import { FaArrowLeft, FaSpinner } from "react-icons/fa";
 
 import ApiKeyBar from "../../components/toolkit/ApiKeyBar";
 import CopyButton from "../../components/toolkit/CopyButton";
+import DemoVideo from "../../components/toolkit/DemoVideo";
 import { openRouterGeminiService } from "../../services/openrouterGemini";
 
 type RunState = "idle" | "loading" | "streaming" | "completed" | "error";
@@ -347,6 +348,12 @@ const ProspectVetting = () => {
           </div>
 
           <ApiKeyBar storageKey="openrouter_api_key" onChange={setApiKey} />
+
+          <DemoVideo
+            videoSrc="/videos/VettingAssistant.mp4"
+            title="See It In Action"
+            description="Watch how to generate a prospect research brief in seconds"
+          />
 
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-6 border border-gray-200 dark:border-gray-700">
             <form onSubmit={handleSubmit} className="space-y-4">

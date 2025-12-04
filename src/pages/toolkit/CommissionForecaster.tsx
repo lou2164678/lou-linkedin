@@ -13,6 +13,7 @@ import {
     ReferenceLine,
     ReferenceDot,
 } from "recharts";
+import DemoVideo from "../../components/toolkit/DemoVideo";
 
 interface AcceleratorTier {
     threshold: number; // % of quota (e.g., 100, 120, 150)
@@ -181,6 +182,12 @@ const CommissionForecaster = () => {
                         </p>
                     </div>
 
+                    <DemoVideo
+                        videoSrc="/videos/commission-forecaster.mp4"
+                        title="See It In Action"
+                        description="Watch how to model your earnings and plan different scenarios"
+                    />
+
                     {/* Summary Cards */}
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                         <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg p-4 text-white shadow-lg">
@@ -308,8 +315,8 @@ const CommissionForecaster = () => {
                                             <div
                                                 key={idx}
                                                 className={`text-xs px-2 py-1 rounded ${quotaAttainment >= tier.threshold
-                                                        ? "bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300"
-                                                        : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400"
+                                                    ? "bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300"
+                                                    : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400"
                                                     }`}
                                             >
                                                 {tier.threshold}%: {tier.multiplier}x

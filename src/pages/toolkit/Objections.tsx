@@ -5,6 +5,7 @@ import { FaArrowLeft, FaUpload, FaQuestion, FaSpinner } from 'react-icons/fa';
 import TwoPane from '../../components/toolkit/TwoPane';
 import CopyButton from '../../components/toolkit/CopyButton';
 import ApiKeyBar from '../../components/toolkit/ApiKeyBar';
+import DemoVideo from '../../components/toolkit/DemoVideo';
 import { openaiService } from '../../services/openai';
 
 interface ObjectionResponse {
@@ -54,21 +55,21 @@ const Objections: React.FC = () => {
     setIndexing(true);
     setError('');
     setIndexResult(null);
-    
+
     try {
       // Simulate indexing process
       await new Promise(resolve => setTimeout(resolve, 2000));
-      
+
       const mockIndexResult = {
         indexed: files.length,
         status: 'success'
       };
-      
+
       const mockDocs = files.map((file, index) => ({
         id: `doc_${index}`,
         title: file.name
       }));
-      
+
       setIndexResult(mockIndexResult);
       setDocs(mockDocs);
     } catch (e: any) {
@@ -87,7 +88,7 @@ const Objections: React.FC = () => {
     setAsking(true);
     setError('');
     setAskResult(null);
-    
+
     try {
       const documents = docs.map(doc => `Document: ${doc.title}`);
       const response = await openaiService.answerObjection(question, documents);
@@ -103,14 +104,14 @@ const Objections: React.FC = () => {
     setIndexResult(null);
     setAskResult(null);
     setError('');
-    
+
     // Simulate loading sample documents
     const sampleDocs = [
       { id: 'sample_1', title: 'Product Pricing Guide.pdf' },
       { id: 'sample_2', title: 'Competitive Positioning.pdf' },
       { id: 'sample_3', title: 'ROI Case Studies.pdf' }
     ];
-    
+
     setDocs(sampleDocs);
     setIndexResult({ indexed: 3, status: 'success' });
   };
@@ -220,7 +221,7 @@ const Objections: React.FC = () => {
                   <li key={i} className="text-sm text-green-700 dark:text-green-300">{bullet}</li>
                 ))}
               </ul>
-              
+
               {askResult.answer.caveat && (
                 <div className="mt-3 pt-3 border-t border-green-200 dark:border-green-700">
                   <p className="text-xs text-green-600 dark:text-green-400">
@@ -228,7 +229,7 @@ const Objections: React.FC = () => {
                   </p>
                 </div>
               )}
-              
+
               <div className="mt-3 pt-3 border-t border-green-200 dark:border-green-700">
                 <h5 className="font-medium text-green-800 dark:text-green-300 mb-1">Talk Track:</h5>
                 <p className="text-sm text-green-700 dark:text-green-300 italic">
@@ -289,6 +290,12 @@ const Objections: React.FC = () => {
           </div>
 
           <ApiKeyBar onChange={setApiKey} />
+
+          <DemoVideo
+            videoSrc="/videos/objections.mp4"
+            title="See It In Action"
+            description="Watch how to get AI-powered responses to customer objections"
+          />
 
           <TwoPane left={leftPane} right={rightPane} />
         </motion.div>
