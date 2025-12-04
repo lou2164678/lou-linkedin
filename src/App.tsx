@@ -12,6 +12,7 @@ import Objections from "./pages/toolkit/Objections";
 
 import ProspectVetting from "./pages/toolkit/ProspectVetting";
 import InterviewPack from "./pages/toolkit/InterviewPack";
+import CommissionForecaster from "./pages/toolkit/CommissionForecaster";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
 
       <Route path="/prospect" element={<Layout><ProspectVetting /></Layout>} />
       <Route path="/interview-pack" element={<Layout><InterviewPack /></Layout>} />
+      <Route path="/commission" element={<Layout><CommissionForecaster /></Layout>} />
       <Route path="*" element={<Layout><NotFound /></Layout>} />
     </Routes>
   );

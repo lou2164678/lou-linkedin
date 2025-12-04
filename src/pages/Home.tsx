@@ -98,9 +98,10 @@ const Home = () => {
 
           <div className="space-y-4">
             {[
-              { id: 1, title: "AI in Sales Playbook", description: "Comprehensive guide for implementing AI in sales processes" },
-              { id: 2, title: "AI in Marketing Playbook", description: "Strategic framework for AI-driven marketing initiatives" },
-              { id: 3, title: "AI in Customer Success Playbook", description: "Best practices for AI-enhanced customer success" }
+              { id: 1, title: "Prospect Vetting Assistant", description: "Real-time prospect research assistant that streams structured Gemini briefings through OpenRouter", link: "/prospect" },
+              { id: 2, title: "Objection Knowledge Base", description: "AI-powered objection handling system using RAG to provide contextual responses", link: "/objections" },
+              { id: 3, title: "AI Interview Pack Generator", description: "Turn a short role query into a structured, JSON-based interview prep pack", link: "/interview-pack" },
+              { id: 4, title: "Commission Forecaster", description: "Model your earnings with what-if scenarios and visualize your path to quota", link: "/commission" }
             ].map((item) => (
               <motion.div
                 key={item.id}
@@ -120,7 +121,7 @@ const Home = () => {
                     </p>
                   </div>
                   <Link
-                    to="/projects"
+                    to={item.link}
                     className="ml-4 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                   >
                     <FaArrowRight size={16} />
@@ -147,16 +148,16 @@ const Home = () => {
                 </svg>
               </div>
               <h3 className="text-lg font-bold text-gray-800 dark:text-white">AI</h3>
-              <p className="text-gray-600 dark:text-gray-300 text-sm">4 years</p>
+              <p className="text-gray-600 dark:text-gray-300 text-sm">3 years</p>
             </div>
 
             <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
               <div className="text-blue-600 dark:text-blue-400 mb-2">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-bold text-gray-800 dark:text-white">Go to Market</h3>
+              <h3 className="text-lg font-bold text-gray-800 dark:text-white">B2B Sales</h3>
               <p className="text-gray-600 dark:text-gray-300 text-sm">7 years</p>
             </div>
 
@@ -183,11 +184,11 @@ const Home = () => {
             <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 md:col-span-2">
               <div className="text-blue-600 dark:text-blue-400 mb-2">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-bold text-gray-800 dark:text-white">Startups</h3>
-              <p className="text-gray-600 dark:text-gray-300 text-sm">5 years</p>
+              <h3 className="text-lg font-bold text-gray-800 dark:text-white">Account Management</h3>
+              <p className="text-gray-600 dark:text-gray-300 text-sm">7 years</p>
             </div>
           </div>
         </div>

@@ -72,6 +72,27 @@ export const projectsData: Project[] = [
     githubUrl: "",
     liveUrl: "/interview-pack",
   },
+  {
+    id: 7,
+    title: "Commission Forecaster & Scenario Planner",
+    category: "AI Sales Tools",
+    description:
+      "Interactive earnings calculator with what-if scenario modeling. Visualize your path to quota with customizable accelerators.",
+    longDescription:
+      "The Commission Forecaster helps sales professionals model their earnings with precision. Enter your comp plan details (base, OTE, quota, accelerators), add pipeline deals with close probabilities, and use scenario sliders to answer 'what if' questions. The interactive earnings curve chart shows accelerator breakpoints and your current projected position, helping you make data-driven decisions about deal prioritization and quota attainment strategies.",
+    technologies: ["React", "TypeScript", "Recharts", "Framer Motion"],
+    features: [
+      "Customizable comp plan with accelerator tiers",
+      "Pipeline deal management with probability weighting",
+      "What-if scenario sliders for earnings projection",
+      "Interactive earnings curve visualization",
+      "Accelerator breakpoint indicators",
+      "Real-time quota attainment tracking",
+    ],
+    image: "/generated_images/Commission_Forecaster_Interface.png",
+    githubUrl: "",
+    liveUrl: "/commission",
+  },
 ];
 
 export const getProjectById = (id: number) => projectsData.find((p) => p.id === id);
